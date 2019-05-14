@@ -1,7 +1,12 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR;
+#else
 using UnityEngine.VR;
+using XRDevice = UnityEngine.VR.VRDevice;
+#endif
 using System.Linq;
 using UnityEngine.Events;
 
@@ -255,20 +260,15 @@ namespace NewtonVR
 
             string deviceName = null;
 
-#if UNITY_2017_2_OR_NEWER
-            if (UnityEngine.XR.XRDevice.isPresent == true)
-                deviceName = UnityEngine.XR.XRDevice.model;
-#else
-            if (UnityEngine.VR.VRDevice.isPresent == true)
-                deviceName = UnityEngine.VR.VRDevice.model;
-#endif
+            if (XRDevice.isPresent == true)
+                deviceName = XRDevice.model;
             
             if (deviceName != null)
             { 
                 resultLog += "Found VRDevice: " + deviceName + ". ";
 
 #if NVR_Oculus
-                if (VRDevice.model.IndexOf("oculus", System.StringComparison.CurrentCultureIgnoreCase) != -1)
+                if (XRDevice.model.IndexOf("oculus", System.StringComparison.CurrentCultureIgnoreCase) != -1)
                 {
                     currentIntegration = NVRSDKIntegrations.Oculus;
                     resultLog += "Using Oculus SDK";

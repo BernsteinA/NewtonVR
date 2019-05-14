@@ -5,7 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using UnityEngine;
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR;
+#else
 using UnityEngine.VR;
+using XRSettings = UnityEngine.VR.VRSettings;
+#endif
 
 #if NVR_Oculus
 namespace NewtonVR
@@ -86,9 +91,9 @@ namespace NewtonVR
         {
             if (Application.isPlaying == false) //try and enable vr if we're in the editor so we can get hmd present
             {
-                if (VRSettings.enabled == false)
+                if (XRSettings.enabled == false)
                 {
-                    VRSettings.enabled = true;
+                    XRSettings.enabled = true;
                 }
 
                 if (Display == null)
