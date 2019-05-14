@@ -59,8 +59,11 @@ namespace NewtonVR
             hasSteamVR = DoesTypeExist("SteamVR");
 
             hasWindowsMR = DoesTypeExist("HoloToolkit.Unity.InputModule.BaseInputSource", true);
-
+#if UNITY_ANDROID
+            string scriptingDefine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android);
+#else
             string scriptingDefine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone);
+#endif
             string[] scriptingDefines = scriptingDefine.Split(';');
             hasOculusSDKDefine = scriptingDefines.Contains(OculusDefine);
             hasSteamVRDefine = scriptingDefines.Contains(SteamVRDefine);
@@ -408,11 +411,19 @@ namespace NewtonVR
             
             if (enableOculusSDK == false && player.OculusSDKEnabled == true)
             {
+#if UNITY_ANDROID
+                RemoveDefine(OculusDefine, BuildTargetGroup.Android);
+#else
                 RemoveDefine(OculusDefine);
+#endif
             }
             else if (enableOculusSDK == true && player.OculusSDKEnabled == false)
             {
+#if UNITY_ANDROID
+                AddDefineToGroup(OculusDefine, BuildTargetGroup.Android);
+#else
                 AddDefine(OculusDefine);
+#endif
             }
 
             if (enableWindowsMR == false && player.WindowsMREnabled == true)

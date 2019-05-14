@@ -1,10 +1,12 @@
 {
-    "name": "NewtonVR",
+    "name": "NewtonVR.CollisionSoundFramework.Editor",
     "references": [
-        "Oculus.VR"
+        "NewtonVR"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
