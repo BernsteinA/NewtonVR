@@ -1,6 +1,8 @@
 {
     "name": "NewtonVR.Editor",
-    "references": [],
+    "references": [
+        "NewtonVR"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
