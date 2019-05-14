@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using NewtonVR;
 using System.Collections.Generic;
-using Valve.VR;
 using System;
 #if UNITY_PS4
 using UnityEngine.PS4;

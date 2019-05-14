@@ -32,6 +32,8 @@ namespace NewtonVR
         public bool OculusSDKEnabled = false;
         [HideInInspector]
         public bool WindowsMREnabled = false;
+        [HideInInspector]
+        public bool PSVREnabled = false;
 
         public InterationStyle InteractionStyle;
         public bool PhysicalHands = true;
