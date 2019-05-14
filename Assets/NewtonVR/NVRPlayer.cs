@@ -99,6 +99,17 @@ namespace NewtonVR
                         Integration = new NVRWindowsMRIntegration();
                         if (Integration.IsHmdPresent() == true)
                         {
+                             return Integration.GetPlayspaceBounds();
+                        }
+                        else
+                        {
+                            Integration = null;
+                        }
+                    }
+
+                    if (PSVREnabled == true) {
+                        Integration = new NVRPSVRIntegration();
+                        if (Integration.IsHmdPresent() == true) {
                             return Integration.GetPlayspaceBounds();
                         }
                         else
@@ -288,6 +299,12 @@ namespace NewtonVR
                 { 
                     currentIntegration = NVRSDKIntegrations.WindowsMR;
                     resultLog += "Using WindowsMR SDK";
+                }
+#endif
+#if UNITY_PS4
+                if (currentIntegration == NVRSDKIntegrations.None) {
+                    currentIntegration = NVRSDKIntegrations.PSVR;
+                    resultLog += "Using PSVR SDK";
                 }
 #endif
             }
