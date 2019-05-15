@@ -8,10 +8,8 @@ namespace NewtonVR
     public enum NVRSDKIntegrations
     {
         None,
+        UnityXR,
         FallbackNonVR,
-        SteamVR,
-        Oculus,
-        WindowsMR,
         PSVR,
     }
 }

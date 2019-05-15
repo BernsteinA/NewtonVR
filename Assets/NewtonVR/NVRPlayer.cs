@@ -26,13 +26,13 @@ namespace NewtonVR
             }
         }
 
-        [HideInInspector]
+        // [HideInInspector]
         public bool SteamVREnabled = false;
-        [HideInInspector]
+        // [HideInInspector]
         public bool OculusSDKEnabled = false;
-        [HideInInspector]
+        // [HideInInspector]
         public bool WindowsMREnabled = false;
-        [HideInInspector]
+        // [HideInInspector]
         public bool PSVREnabled = false;
 
         public InterationStyle InteractionStyle;
@@ -70,38 +70,12 @@ namespace NewtonVR
                 }
                 else
                 {
-                    if (OculusSDKEnabled == true)
+                    if (XRSettings.enabled == true)
                     {
-                        Integration = new NVROculusIntegration();
+                        Integration = new NVRUnityXRIntegration();
                         if (Integration.IsHmdPresent() == true)
                         {
                             return Integration.GetPlayspaceBounds();
-                        }
-                        else
-                        {
-                            Integration = null;
-                        }
-                    }
-
-                    if (SteamVREnabled == true)
-                    {
-                        Integration = new NVRSteamVRIntegration();
-                        if (Integration.IsHmdPresent() == true)
-                        {
-                            return Integration.GetPlayspaceBounds();
-                        }
-                        else
-                        {
-                            Integration = null;
-                        }
-                    }
-
-                    if (WindowsMREnabled == true)
-                    {
-                        Integration = new NVRWindowsMRIntegration();
-                        if (Integration.IsHmdPresent() == true)
-                        {
-                             return Integration.GetPlayspaceBounds();
                         }
                         else
                         {
@@ -127,38 +101,16 @@ namespace NewtonVR
 
         [Space]
 
-        [HideInInspector]
+        // [HideInInspector]
         public bool OverrideAll;
-        [HideInInspector]
+        // [HideInInspector]
         public GameObject OverrideAllLeftHand;
-        [HideInInspector]
+        // [HideInInspector]
         public GameObject OverrideAllLeftHandPhysicalColliders;
-        [HideInInspector]
+        // [HideInInspector]
         public GameObject OverrideAllRightHand;
-        [HideInInspector]
+        // [HideInInspector]
         public GameObject OverrideAllRightHandPhysicalColliders;
-
-        [HideInInspector]
-        public bool OverrideSteamVR;
-        [HideInInspector]
-        public GameObject OverrideSteamVRLeftHand;
-        [HideInInspector]
-        public GameObject OverrideSteamVRLeftHandPhysicalColliders;
-        [HideInInspector]
-        public GameObject OverrideSteamVRRightHand;
-        [HideInInspector]
-        public GameObject OverrideSteamVRRightHandPhysicalColliders;
-
-        [HideInInspector]
-        public bool OverrideOculus;
-        [HideInInspector]
-        public GameObject OverrideOculusLeftHand;
-        [HideInInspector]
-        public GameObject OverrideOculusLeftHandPhysicalColliders;
-        [HideInInspector]
-        public GameObject OverrideOculusRightHand;
-        [HideInInspector]
-        public GameObject OverrideOculusRightHandPhysicalColliders;
 
         [Space]
 
@@ -236,17 +188,12 @@ namespace NewtonVR
         {
             CurrentIntegrationType = DetermineCurrentIntegration(logOutput);
 
-            if (CurrentIntegrationType == NVRSDKIntegrations.Oculus)
+            if (CurrentIntegrationType == NVRSDKIntegrations.UnityXR)
             {
-                Integration = new NVROculusIntegration();
+                Integration = new NVRUnityXRIntegration();
             }
-            else if (CurrentIntegrationType == NVRSDKIntegrations.SteamVR)
-            {
-                Integration = new NVRSteamVRIntegration();
-            }
-            else if (CurrentIntegrationType == NVRSDKIntegrations.WindowsMR)
-            {
-                Integration = new NVRWindowsMRIntegration();
+            else if (CurrentIntegrationType == NVRSDKIntegrations.PSVR) {
+                Integration = new NVRPSVRIntegration();
             }
             else if (CurrentIntegrationType == NVRSDKIntegrations.FallbackNonVR)
             {
@@ -280,29 +227,17 @@ namespace NewtonVR
             { 
                 resultLog += "Found VRDevice: " + deviceName + ". ";
 
-#if NVR_Oculus
                 if (XRDevice.model.IndexOf("oculus", System.StringComparison.CurrentCultureIgnoreCase) != -1)
                 {
-                    currentIntegration = NVRSDKIntegrations.Oculus;
-                    resultLog += "Using Oculus SDK";
+                    currentIntegration = NVRSDKIntegrations.UnityXR;
+                    resultLog += "Using Oculus via UnityEngine.XR";
                 }
-#endif
+                else if (XRDevice.model.IndexOf("vive", System.StringComparison.CurrentCultureIgnoreCase) != -1)
+                {
+                    currentIntegration = NVRSDKIntegrations.UnityXR;
+                    resultLog += "Using Vive via UnityEngine.XR";
+                }
 
-#if NVR_SteamVR
-                if (currentIntegration == NVRSDKIntegrations.None)
-                { 
-                    currentIntegration = NVRSDKIntegrations.SteamVR;
-                    resultLog += "Using SteamVR SDK";
-                }
-#endif
-
-#if NVR_WindowsMR
-                if (currentIntegration == NVRSDKIntegrations.None)
-                { 
-                    currentIntegration = NVRSDKIntegrations.WindowsMR;
-                    resultLog += "Using WindowsMR SDK";
-                }
-#endif
 #if UNITY_PS4
                 if (currentIntegration == NVRSDKIntegrations.None) {
                     currentIntegration = NVRSDKIntegrations.PSVR;
@@ -324,10 +259,6 @@ namespace NewtonVR
                 }
             }
 
-#if !NVR_Oculus && !NVR_SteamVR && !NVR_WindowsMR
-            string warning = "No VR SDk has been enabled in the NVRPlayer. Please check the \"Enable SteamVR\" / \"Enable Oculus SDK\" /  \"Enable Windows MR\" checkbox in the NVRPlayer script in the NVRPlayer GameObject.";
-            Debug.LogWarning(warning);
-#endif
             if (logOutput == true)
             {
                 Debug.Log(resultLog);

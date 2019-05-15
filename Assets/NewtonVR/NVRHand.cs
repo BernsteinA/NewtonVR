@@ -170,75 +170,17 @@ namespace NewtonVR
                 }
             }
 
-            if (Player.CurrentIntegrationType == NVRSDKIntegrations.Oculus)
+            if (Player.CurrentIntegrationType == NVRSDKIntegrations.UnityXR)
             {
-                InputDevice = gameObject.AddComponent<NVROculusInputDevice>();
-
-                if (Player.OverrideOculus == true)
-                {
-                    if (IsLeft)
-                    {
-                        CustomModel = Player.OverrideOculusLeftHand;
-                        CustomPhysicalColliders = Player.OverrideOculusLeftHandPhysicalColliders;
-                    }
-                    else if (IsRight)
-                    {
-                        CustomModel = Player.OverrideOculusRightHand;
-                        CustomPhysicalColliders = Player.OverrideOculusRightHandPhysicalColliders;
-                    }
-                    else
-                    {
-                        Debug.LogError("[NewtonVR] Error: Unknown hand for oculus model override.");
-                    }
-                }
+                InputDevice = gameObject.AddComponent<NVRUnityXRInputDevice>();
             }
-            else if (Player.CurrentIntegrationType == NVRSDKIntegrations.SteamVR)
+            else if (Player.CurrentIntegrationType == NVRSDKIntegrations.PSVR)
             {
-                InputDevice = gameObject.AddComponent<NVRSteamVRInputDevice>();
-
-                if (Player.OverrideSteamVR == true)
-                {
-                    if (IsLeft)
-                    {
-                        CustomModel = Player.OverrideSteamVRLeftHand;
-                        CustomPhysicalColliders = Player.OverrideSteamVRLeftHandPhysicalColliders;
-                    }
-                    else if (IsRight)
-                    {
-                        CustomModel = Player.OverrideSteamVRRightHand;
-                        CustomPhysicalColliders = Player.OverrideSteamVRRightHandPhysicalColliders;
-                    }
-                    else
-                    {
-                        Debug.LogError("[NewtonVR] Error: Unknown hand for SteamVR model override.");
-                    }
-                }
-            }
-            else if (Player.CurrentIntegrationType == NVRSDKIntegrations.WindowsMR)
-            {
-                InputDevice = gameObject.AddComponent<NVRWindowsMRInput>();
-
-                if (Player.OverrideSteamVR == true)
-                {
-                    if (IsLeft)
-                    {
-                        CustomModel = Player.OverrideSteamVRLeftHand;
-                        CustomPhysicalColliders = Player.OverrideSteamVRLeftHandPhysicalColliders;
-                    }
-                    else if (IsRight)
-                    {
-                        CustomModel = Player.OverrideSteamVRRightHand;
-                        CustomPhysicalColliders = Player.OverrideSteamVRRightHandPhysicalColliders;
-                    }
-                    else
-                    {
-                        Debug.LogError("[NewtonVR] Error: Unknown hand for SteamVR model override.");
-                    }
-                }
+                InputDevice = gameObject.AddComponent<NVRPSVRInputDevice>();
             }
             else
             {
-                //Debug.LogError("[NewtonVR] Critical Error: NVRPlayer.CurrentIntegration not setup.");
+                Debug.LogError("[NewtonVR] Critical Error: NVRPlayer.CurrentIntegration not setup.");
                 return;
             }
 
